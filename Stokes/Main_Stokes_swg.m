@@ -70,10 +70,10 @@ close all;
 %
 % Enter the level of grid refinement: Set maxIt = 3 or larger values if you know 
 % the exact sol and would like to see the errors and convergence.
-maxIt = 1;
+maxIt = 4;
 %
 % Computation parameter: meshsize
-h=[1/4 1/2 1/4 1/8];
+h=[1/1 1/2 1/4 1/8];
 %
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Mesh options
