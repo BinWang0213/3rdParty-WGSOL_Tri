@@ -149,7 +149,7 @@ for k = 1:maxIt
      figure(1);
      showmesh(node,elem);
      T = auxstructure(elem);
-     %findedge(node,T.edge);
+     findedge(node,T.edge);
      %findnode(node);
      findelem(node,elem);
      axis on;
@@ -157,7 +157,8 @@ for k = 1:maxIt
      %%}
      
      %bdFlag = setboundary(node,elem,'Dirichlet');
-     bdFlag = setboundary(node,elem,'Dirichlet','all','Neumann','(x==-1)');
+     %bdFlag = setboundary(node,elem,'Dirichlet','all','Neumann','(x==-1)');
+     bdFlag = setboundary(node,elem,'Dirichlet','all','Neumann','(x==-1) | (x==1)');
      [u,AD,b,err_tria,info] = Stokes_SWG_triangle(node,elem,domain,pde,bdFlag,option);   
      
      ERR_triangle(k,4)=Stokes_triangle_PostProcess(node,elem,h(k),info,pde,u);

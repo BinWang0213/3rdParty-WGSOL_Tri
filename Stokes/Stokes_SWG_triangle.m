@@ -402,7 +402,8 @@ function [AD,b,u,freeDof,isPureNeumann]= getbdCCFVcoef_triangle(A,b)
     else
         AD = A;
     end
-    
+    AD_full=full(AD);
+
     %% Part 2: Find boundary edges and modify the right hand side b
     
     % Neumann boundary condition
@@ -454,12 +455,11 @@ function [AD,b,u,freeDof,isPureNeumann]= getbdCCFVcoef_triangle(A,b)
     if ~isPureNeumann % non-empty Dirichlet boundary condition
         b(fixeEdgeIndex) = u(fixeEdgeIndex);
         b(NE+fixeEdgeIndex) = u(NE+fixeEdgeIndex);
-        %b(2*NE+1) = u(2*NE+1);
+        %(2*NE+1) = u(2*NE+1);
     end
     A_full=full(A);
-    AD_full=full(AD);
 
-    freeDof = [freeEdgeIndex;NE+freeEdgeIndex;2*NE+(2:NT)'];
+    freeDof = [freeEdgeIndex;NE+freeEdgeIndex;2*NE+(1:NT)'];
 end
 
 end
