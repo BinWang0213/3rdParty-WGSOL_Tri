@@ -1,0 +1,2 @@
+    errL2    rateL2     errH1    rateH1     errL2 p  rateL2 p 
+    2.73e-01   0.00     1.39e+00   0.00     1.25e+00   0.00
