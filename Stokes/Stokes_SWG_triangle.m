@@ -395,7 +395,7 @@ function [AD,b,u,freeDof,isPureNeumann]= getbdCCFVcoef_triangle(A,b)
         bdidx = zeros(Ndof,1); 
         bdidx(fixeEdgeIndex) = 1;
         bdidx(fixeEdgeIndex+NE)=1;
-        bdidx(2*NE+1)=1;
+        %bdidx(2*NE+1)=1;
         Tbd = spdiags(bdidx,0,Ndof,Ndof);
         T = spdiags(1-bdidx,0,Ndof,Ndof);
         AD = T*A*T + Tbd;
@@ -418,11 +418,16 @@ function [AD,b,u,freeDof,isPureNeumann]= getbdCCFVcoef_triangle(A,b)
     end
     
     if ~isempty(pde.g_N) && ~isempty(Neumann)
+        % length of edge
+        ve = node(Neumann(:,1),:) - node(Neumann(:,2),:);
+        edgeLength = sqrt(sum(ve.^2,2));
+        
         p_fix = (pde.g_N(node(Neumann(:,1),:))...
             + 4*pde.g_N(0.5*(node(Neumann(:,1),:) + node(Neumann(:,2),:)))...
             +   pde.g_N(node(Neumann(:,2),:)))./6;
-        b(Neumannidx) = b(Neumannidx)+ p_fix(:,1); 
-        b(NE + Neumannidx) = b(NE + Neumannidx)+ p_fix(:,2);
+        
+        b(Neumannidx) = b(Neumannidx)+ p_fix(:,1).*edgeLength; 
+        b(NE + Neumannidx) = b(NE + Neumannidx)+ p_fix(:,2).*edgeLength;
     end
     
     % Dirichlet boundary condition
@@ -441,7 +446,7 @@ function [AD,b,u,freeDof,isPureNeumann]= getbdCCFVcoef_triangle(A,b)
             u(fixeEdgeIndex) = u_fix(:,1); 
             u(NE + fixeEdgeIndex) = u_fix(:,2);
             %u(2*NE + 1) = pde.pp(elem_center(1,:));
-            u(2*NE + 1) = 0;
+            %u(2*NE + 1) = 0;
             %fprintf('Boundary node fixe is Ok!\n')
         end
         b = b - A*u;
@@ -449,7 +454,7 @@ function [AD,b,u,freeDof,isPureNeumann]= getbdCCFVcoef_triangle(A,b)
     if ~isPureNeumann % non-empty Dirichlet boundary condition
         b(fixeEdgeIndex) = u(fixeEdgeIndex);
         b(NE+fixeEdgeIndex) = u(NE+fixeEdgeIndex);
-        b(2*NE+1) = u(2*NE+1);
+        %b(2*NE+1) = u(2*NE+1);
     end
     A_full=full(A);
     AD_full=full(AD);
